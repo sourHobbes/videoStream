@@ -18,16 +18,16 @@ class MyQueue:
     def add(self, val):
         for k in self.qs:
             q = self.qs.get(k)
-            #q.lock.acquire()
-            #try:
-            q.q.append(val)
-            #finally:
-            #    q.lock.release()
+            q.lock.acquire()
+            try:
+                q.q.append(val)
+            finally:
+                q.lock.release()
 
     def get(self, idx):
         q = self.qs.get(idx % self.consumer_cnt)
-        #q.lock.acquire()
-        #try:
-        return q.q.popleft()
-        #finally:
-        #    q.lock.release()
+        q.lock.acquire()
+        try:
+            return q.q.popleft()
+        finally:
+            q.lock.release()
